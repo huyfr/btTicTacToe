@@ -1,0 +1,25 @@
+.container
+{
+    text-align: center;
+}
+table
+{
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin: auto;
+}
+table td
+{
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+    text-align: center;
+    font-size: xx-large;
+    font-weight: bold;
+    cursor: pointer;
+}
+button
+{
+    width: 70px;
+    height: 30px;
+}
