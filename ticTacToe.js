@@ -3,9 +3,9 @@ let size;
 function drawBoard(input)
 {
     size = input;
-
     let table="<table>";
     let i,j;
+
     for (i=0; i<size; i++)
     {
         table=table+"<tr>";
@@ -21,8 +21,13 @@ function drawBoard(input)
     document.getElementById("ticTacToe").innerHTML=table;
 }
 let status="X";
+
 function changeCondition(cell, xPos, yPos)
 {
+    if (cell.innerText.trim().length>0)
+    {
+        return;
+    }
     cell.innerHTML=status;
     if (status==="X")
     {
@@ -37,98 +42,148 @@ function changeCondition(cell, xPos, yPos)
     winCheck(xPos, yPos);
 }
 
+let countHorizontal = 1;
+let countVertical = 1;
+let countDiagonalRightToLeft = 1;
+let countDiagonalLefToRight = 1;
+let draw=1;
+
 function winCheck(xPos, yPos)
 {
-    console.log(game);
-    let count=1;
-    let valueOfCell=game[xPos][yPos];
-    let i=xPos;
-    let j=yPos;
+    // console.log(game);
+    countHorizontal = 1;
+    countVertical = 1;
+    countDiagonalRightToLeft = 1;
+    countDiagonalLefToRight = 1;
+    let valueOfCell = game[xPos][yPos];
+    let i = xPos;
+    let j = yPos;
 
-    // console.log(game[i][j+1]);
-    while(game[i][j+1]===valueOfCell && game[i][j+1]<size)  //check hang ngang (trai sang phai).
-     {
-         count++;
-         confirmWinner(count, 3);
-         j++;
-     }
-     i=xPos;
-     j=yPos;
-
-     // console.log(game[i][j-1]);
-     while (game[i][j-1]===valueOfCell && game[i][j-1]<size) //check hang ngang (phai sang trai).
-     {
-         count++;
-         confirmWinner(count, 3);
-         j--;
-     }
-    i=xPos;
-    j=yPos;
-
-    // console.log(game[i+1][j]);
-    while (game[i+1][j]===valueOfCell && game[i+1][j]<size) //check hang doc (tren xuong duoi).
+    while (game[i][j + 1] === valueOfCell && game[i][j + 1] < size)  //check hang ngang (trai sang phai).
     {
-        count++;
-        confirmWinner(count, 3);
-        i++;
-    }
-    i=xPos;
-    j=yPos;
-
-    // console.log(game[i-1][j]);
-    while (game[i-1][j]===valueOfCell && game[i-1][j]<size)     //check hang doc (duoi len tren)
-    {
-        count++;
-        confirmWinner(count, 3);
-        i--;
-    }
-    i=xPos;
-    j=yPos;
-
-    // console.log(game[i+1][j+1]);
-    while (game[i+1][j+1]===valueOfCell && game[i+1][j+1]<size) //check hang cheo (trai xuong phai).
-    {
-        count++;
-        confirmWinner(count, 3);
-        i++;
+        countHorizontal++;
+        confirmWinner(countHorizontal, 3);
         j++;
     }
+    i = xPos;
+    j = yPos;
+    while (game[i][j - 1] === valueOfCell && game[i][j - 1] < size) //check hang ngang (phai sang trai).
+    {
+        countHorizontal++;
+        confirmWinner(countHorizontal, 3);
+        j--;
+    }
+    i = xPos;
+    j = yPos;
+    try
+    {
+        while (game[i + 1][j] === valueOfCell && game[i + 1][j] < size) //check hang doc (tren xuong duoi).
+        {
+            countVertical++;
+            confirmWinner(countVertical, 3);
+            i++;
+        }
+    } catch (e)
+    {
+
+    }
+    i = xPos;
+    j = yPos;
+    try
+    {
+        while (game[i - 1][j] === valueOfCell && game[i - 1][j] < size)     //check hang doc (duoi len tren)
+        {
+            countVertical++;
+            confirmWinner(countVertical, 3);
+            i--;
+        }
+    }
+    catch (e)
+    {
+
+    }
+    i = xPos;
+    j = yPos;
+    try
+    {
+        while (game[i+1][j+1]===valueOfCell && game[i+1][j+1]<size) //check hang cheo (trai xuong phai).
+        {
+            countDiagonalLefToRight++;
+            confirmWinner(countDiagonalLefToRight, 3);
+            i++;
+            j++;
+        }
+    }
+    catch (e)
+    {
+
+    }
     i=xPos;
     j=yPos;
-
-    // console.log(game[i-1][j-1]);
-    while (game[i-1][j-1]===valueOfCell && game[i-1][j-1]<size)     //check hang cheo (phai len trai).
+    try
     {
-        count++;
-        confirmWinner(count, 3);
-        i--;
-        j--;
+        while (game[i-1][j-1]===valueOfCell && game[i-1][j-1]<size)     //check hang cheo (phai len trai).
+        {
+            countDiagonalLefToRight++;
+            confirmWinner(countDiagonalLefToRight, 3);
+            i--;
+            j--;
+        }
     }
-
-    // console.log(game[i-1][j-1]);
-    while (game[i+1][j-1]===valueOfCell && game[i+1][j-1]<size)     //check hang cheo (phai xuong trai).
+    catch (e)
     {
-        count++;
-        confirmWinner(count, 3);
-        i++;
-        j--;
-    }
 
-    // console.log(game[i-1][j+1]);
-    while (game[i-1][j+1]===valueOfCell && game[i-1][j+1]<size)     //check hang cheo (trai len phai).
-    {
-        count++;
-        confirmWinner(count, 3);
-        i--;
-        j++;
     }
+    i=xPos;
+    j=yPos;
+    try
+    {
+        while (game[i+1][j-1]===valueOfCell && game[i+1][j-1]<size)     //check hang cheo (phai xuong trai).
+        {
+            countDiagonalRightToLeft++;
+            confirmWinner(countDiagonalRightToLeft, 3);
+            i++;
+            j--;
+        }
+    }
+    catch (e)
+    {
+
+    }
+    i=xPos;
+    j=yPos;
+    try
+    {
+        while (game[i-1][j+1]===valueOfCell && game[i-1][j+1]<size)     //check hang cheo (trai len phai).
+        {
+            countDiagonalRightToLeft++;
+            confirmWinner(countDiagonalRightToLeft, 3);
+            i--;
+            j++;
+        }
+    }
+    catch (e)
+    {
+
+    }
+    draw ++;
 }
 
 function confirmWinner(count, number)
 {
     if (count===number)
     {
-        setTimeout(function(){ alert("Win"); }, 500)
+        setTimeout(function(){ alert("Win"); }, 200);
         return;
     }
+    if(draw===number*number)
+    {
+        setTimeout(function(){ alert("Draw"); }, 200);
+        return;
+    }
+}
+
+function resetGame()
+{
+    drawBoard(size);
 }
